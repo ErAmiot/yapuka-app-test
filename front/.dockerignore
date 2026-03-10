@@ -1,0 +1,9 @@
+dist/
+cypress/
+cypress.config.js
+.gitignore
+.git/
+.idea/
+.vscode/
+Dockerfile*
+.env.local
