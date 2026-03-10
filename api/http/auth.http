@@ -21,12 +21,14 @@
 ### =============================================================================
 ### Inscription d'un nouvel utilisateur
 ### =============================================================================
+@host = http://localhost:8080
+
 POST {{host}}/api/auth/register
 Content-Type: application/json
 
 {
-  "email": "demo@yapuka.dev",
-  "username": "Démo User",
+  "email": "new@yapuka.dev",
+  "username": "New User",
   "password": "password"
 }
 

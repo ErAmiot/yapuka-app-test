@@ -3,6 +3,7 @@
 namespace App\Tests\Behat;
 
 use App\Entity\User;
+use Behat\Gherkin\Node\PyStringNode;
 use Behat\Step\Given;
 use Behat\Step\Then;
 use Behat\Step\When;
@@ -112,6 +113,10 @@ class AnonymousContext implements Context
     function avantChaqueScenario()
     {
         $this->responseData = [];
+
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'nouveau@yapuka.dev']);
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
     }
 
     /**
@@ -141,9 +146,46 @@ class AnonymousContext implements Context
     public function leCodeDeReponseEst(int $code): void
     {
         $actualCode = $this->client->getResponse()->getStatusCode();
+
+        var_dump($actualCode);
+
         if ($actualCode != $code) {
             throw new RuntimeException(
                 "codes attendu : {$code}, reçu : {$actualCode}"
+            );
+        }
+    }
+
+    /**
+     * @When j'envoie une requête POST sur :url avec le corps :
+     * @throws \JsonException
+     */
+    public function jEnvoieUneRequêtePOSTSurAvecLeCorps(string $url, PyStringNode $body): void
+    {
+        $this->client->request(
+            'POST',
+            $url,
+            [], [],
+            ['CONTENT_TYPE' => 'application/json'],
+            $body->getRaw()
+        );
+
+        $this->responseData = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+    }
+
+    /**
+     * @Given la réponse JSON contient la clé :key
+     */
+    public function laRéponseJSONContientLaCle(string $key): void
+    {
+        $content = $this->responseData;
+
+        var_dump($content);
+
+        if(! is_array($content) || ! array_key_exists($key, $content)){
+            throw new \RuntimeException(
+                "Clé $key absente"
             );
         }
     }
