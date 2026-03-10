@@ -114,9 +114,7 @@ class AnonymousContext implements Context
     {
         $this->responseData = [];
 
-        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'nouveau@yapuka.dev']);
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
+
     }
 
     /**
@@ -146,9 +144,6 @@ class AnonymousContext implements Context
     public function leCodeDeReponseEst(int $code): void
     {
         $actualCode = $this->client->getResponse()->getStatusCode();
-
-        var_dump($actualCode);
-
         if ($actualCode != $code) {
             throw new RuntimeException(
                 "codes attendu : {$code}, reçu : {$actualCode}"
@@ -172,6 +167,31 @@ class AnonymousContext implements Context
 
         $this->responseData = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
 
+        var_dump($this->responseData);
+        var_dump($this->client->getResponse()->getStatusCode());;
+    }
+
+    /**
+     * @When j'envoie une requête authentifiée POST sur :url avec le corps :
+     * @throws \JsonException
+     */
+    public function jEnvoieUneRequêteAuthentifieeSurAvecLeCorps(string $url, PyStringNode $body): void
+    {
+        $this->client->request(
+            'POST',
+            $url,
+            [], [],
+            [
+                'CONTENT_TYPE' => 'application/json',
+                'HTTP_AUTHORIZATION' => 'Bearer ' . $this->jwtToken,
+            ],
+            $body->getRaw()
+        );
+
+        $this->responseData = json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+
+        var_dump($this->responseData);
+        var_dump($this->client->getResponse()->getStatusCode());;
     }
 
     /**
@@ -181,12 +201,33 @@ class AnonymousContext implements Context
     {
         $content = $this->responseData;
 
-        var_dump($content);
-
         if(! is_array($content) || ! array_key_exists($key, $content)){
             throw new \RuntimeException(
                 "Clé $key absente"
             );
         }
+    }
+
+    /**
+     * @When /^je m'inscrit sur le site :$/
+     */
+    public function jeMInscritSurLeSite(PyStringNode $string)
+    {
+        $user = $this->entityManager->getRepository(User::class)->findOneBy(['email' => 'nouveau@yapuka.dev']);
+        if($user){
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+        }
+
+        $this->client->request(
+            'POST',
+            '/api/auth/register',
+            [], [],
+            ['CONTENT_TYPE' => 'application/json'],
+            $string->getRaw()
+        );
+
+        $this->responseData = json_decode($this->client->getResponse()->getContent(), true);
+        $this->jwtToken = $this->responseData['token'];
     }
 }
