@@ -15,6 +15,8 @@
 
 FROM php:8.4-fpm-alpine
 
+RUN apk update && apk upgrade --no-cache
+
 # --- Installer les dépendances système ---
 RUN apk add --no-cache \
     postgresql-dev \
