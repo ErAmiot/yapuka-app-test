@@ -22,3 +22,7 @@ framework:
     # Génération d'UID Symfony
     uid:
         default_uuid_version: 7
+
+when@test:
+  framework:
+    test: true
