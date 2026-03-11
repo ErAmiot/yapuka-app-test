@@ -10,6 +10,10 @@ jobs:
     name: Build Images Docker
     runs-on: ubuntu-latest
 
+    permissions:
+      contents: read
+      packages: write
+
     # --- Ne builder que sur un push (pas sur les PR) ---
     # if: github.event_name == 'push'
 
