@@ -13,7 +13,9 @@
 #   - xdebug    : débogage et couverture de code (dev uniquement)
 # =============================================================================
 
-FROM php:8.4-fpm-alpine
+FROM php:8.4-fpm-alpine3.22
+
+RUN apk update && apk upgrade --no-cache
 
 # --- Installer les dépendances système ---
 RUN apk add --no-cache \
