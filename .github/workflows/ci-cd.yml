@@ -109,8 +109,8 @@ jobs:
     env:
       DATABASE_URL: "postgresql://yapuka:yapuka@localhost:5432/yapuka_test?serverVersion=16&charset=utf8"
       REDIS_URL: "redis://localhost:6379"
-      APP_ENV: test
-      APP_SECRET: ci-test-secret
+      APP_ENV: "test"
+      APP_SECRET: "ci-test-secret"
 
     steps:
       - name: Checkout du code
