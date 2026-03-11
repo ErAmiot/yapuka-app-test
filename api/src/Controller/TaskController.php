@@ -88,6 +88,7 @@ class TaskController extends AbstractController
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }
+
             return $this->json(['errors' => $errorMessages], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
@@ -96,7 +97,7 @@ class TaskController extends AbstractController
         $this->entityManager->flush();
 
         // Invalider le cache des statistiques (les stats doivent être recalculées)
-        $this->cache->delete('task_stats_' . $user->getId());
+        $this->cache->delete('task_stats_'.$user->getId());
 
         // Retourner la tâche créée
         $json = $this->serializer->serialize($task, 'json', ['groups' => 'task:read']);
@@ -152,13 +153,14 @@ class TaskController extends AbstractController
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }
+
             return $this->json(['errors' => $errorMessages], Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         $this->entityManager->flush();
 
         // Invalider le cache des stats
-        $this->cache->delete('task_stats_' . $user->getId());
+        $this->cache->delete('task_stats_'.$user->getId());
 
         $json = $this->serializer->serialize($task, 'json', ['groups' => 'task:read']);
 
@@ -187,7 +189,7 @@ class TaskController extends AbstractController
         $this->entityManager->flush();
 
         // Invalider le cache
-        $this->cache->delete('task_stats_' . $user->getId());
+        $this->cache->delete('task_stats_'.$user->getId());
 
         return $this->json(['message' => 'Tâche supprimée.'], Response::HTTP_OK);
     }
@@ -205,10 +207,11 @@ class TaskController extends AbstractController
 
         // Récupérer les stats depuis le cache Redis, ou les calculer
         $stats = $this->cache->get(
-            'task_stats_' . $user->getId(),
+            'task_stats_'.$user->getId(),
             function (ItemInterface $item) use ($user) {
                 // Durée de vie du cache : 60 secondes
                 $item->expiresAfter(60);
+
                 return $this->taskRepository->getStatsByOwner($user);
             }
         );

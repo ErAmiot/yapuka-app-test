@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 class TaskEntityTest extends TestCase
 {
     /**
-     * Test : une nouvelle tâche a le statut "todo" par défaut
+     * Test : une nouvelle tâche a le statut "todo" par défaut.
      */
     public function testDefaultStatus(): void
     {
@@ -28,7 +28,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : une nouvelle tâche a la priorité "medium" par défaut
+     * Test : une nouvelle tâche a la priorité "medium" par défaut.
      */
     public function testDefaultPriority(): void
     {
@@ -38,7 +38,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : la date de création est remplie automatiquement
+     * Test : la date de création est remplie automatiquement.
      */
     public function testCreatedAtIsSet(): void
     {
@@ -49,7 +49,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : une tâche sans date d'échéance n'est jamais en retard
+     * Test : une tâche sans date d'échéance n'est jamais en retard.
      */
     public function testTaskWithoutDueDateIsNotOverdue(): void
     {
@@ -60,7 +60,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : une tâche terminée n'est jamais en retard (même si date dépassée)
+     * Test : une tâche terminée n'est jamais en retard (même si date dépassée).
      */
     public function testDoneTaskIsNeverOverdue(): void
     {
@@ -74,7 +74,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : une tâche non terminée avec une date passée est en retard
+     * Test : une tâche non terminée avec une date passée est en retard.
      */
     public function testOverdueTask(): void
     {
@@ -86,7 +86,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : une tâche avec une date future n'est pas en retard
+     * Test : une tâche avec une date future n'est pas en retard.
      */
     public function testFutureTaskIsNotOverdue(): void
     {
@@ -98,7 +98,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : on peut assigner un propriétaire à une tâche
+     * Test : on peut assigner un propriétaire à une tâche.
      */
     public function testSetOwner(): void
     {
@@ -112,7 +112,7 @@ class TaskEntityTest extends TestCase
     }
 
     /**
-     * Test : le changement de statut met à jour updatedAt
+     * Test : le changement de statut met à jour updatedAt.
      */
     public function testStatusChangeUpdatesTimestamp(): void
     {

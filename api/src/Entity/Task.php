@@ -12,12 +12,6 @@
 
 namespace App\Entity;
 
-use ApiPlatform\Metadata\ApiResource;
-use ApiPlatform\Metadata\Delete;
-use ApiPlatform\Metadata\Get;
-use ApiPlatform\Metadata\GetCollection;
-use ApiPlatform\Metadata\Post;
-use ApiPlatform\Metadata\Put;
 use App\Repository\TaskRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -125,6 +119,7 @@ class Task
     public function setTitle(string $title): static
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -136,6 +131,7 @@ class Task
     public function setDescription(?string $description): static
     {
         $this->description = $description;
+
         return $this;
     }
 
@@ -149,6 +145,7 @@ class Task
         $this->status = $status;
         // Mettre à jour la date de modification à chaque changement de statut
         $this->updatedAt = new \DateTimeImmutable();
+
         return $this;
     }
 
@@ -160,6 +157,7 @@ class Task
     public function setPriority(string $priority): static
     {
         $this->priority = $priority;
+
         return $this;
     }
 
@@ -171,6 +169,7 @@ class Task
     public function setDueDate(?\DateTimeImmutable $dueDate): static
     {
         $this->dueDate = $dueDate;
+
         return $this;
     }
 
@@ -182,6 +181,7 @@ class Task
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+
         return $this;
     }
 
@@ -198,6 +198,7 @@ class Task
     public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
         return $this;
     }
 
@@ -206,13 +207,14 @@ class Task
     // =========================================================================
 
     /**
-     * Vérifie si la tâche est en retard (date d'échéance dépassée et non terminée)
+     * Vérifie si la tâche est en retard (date d'échéance dépassée et non terminée).
      */
     public function isOverdue(): bool
     {
-        if ($this->dueDate === null || $this->status === self::STATUS_DONE) {
+        if (null === $this->dueDate || self::STATUS_DONE === $this->status) {
             return false;
         }
+
         return $this->dueDate < new \DateTimeImmutable('today');
     }
 }

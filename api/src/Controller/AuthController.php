@@ -79,6 +79,7 @@ class AuthController extends AbstractController
             foreach ($errors as $error) {
                 $errorMessages[] = $error->getMessage();
             }
+
             return $this->json(
                 ['errors' => $errorMessages],
                 Response::HTTP_UNPROCESSABLE_ENTITY

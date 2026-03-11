@@ -30,7 +30,7 @@ class TaskNotificationListener
     }
 
     /**
-     * Déclenché après la création d'une nouvelle tâche
+     * Déclenché après la création d'une nouvelle tâche.
      */
     public function postPersist(Task $task): void
     {
@@ -49,7 +49,7 @@ class TaskNotificationListener
     }
 
     /**
-     * Déclenché après la modification d'une tâche
+     * Déclenché après la modification d'une tâche.
      */
     public function postUpdate(Task $task): void
     {
@@ -60,7 +60,7 @@ class TaskNotificationListener
     }
 
     /**
-     * Déclenché après la suppression d'une tâche
+     * Déclenché après la suppression d'une tâche.
      */
     public function postRemove(Task $task): void
     {

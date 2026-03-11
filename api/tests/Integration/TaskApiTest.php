@@ -43,7 +43,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Crée un utilisateur de test en base
+     * Crée un utilisateur de test en base.
      */
     private function createTestUser(): void
     {
@@ -59,7 +59,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Obtient un token JWT via le endpoint de login
+     * Obtient un token JWT via le endpoint de login.
      */
     private function getJwtToken(): string
     {
@@ -76,13 +76,13 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Helper : ajoute le header Authorization avec le JWT
+     * Helper : ajoute le header Authorization avec le JWT.
      */
     private function authRequest(string $method, string $uri, array $data = []): void
     {
         $this->client->request($method, $uri, [], [], [
             'CONTENT_TYPE' => 'application/json',
-            'HTTP_AUTHORIZATION' => 'Bearer ' . $this->jwtToken,
+            'HTTP_AUTHORIZATION' => 'Bearer '.$this->jwtToken,
         ], $data ? json_encode($data) : null);
     }
 
@@ -91,7 +91,7 @@ class TaskApiTest extends WebTestCase
     // =========================================================================
 
     /**
-     * Test : l'inscription avec des données valides retourne 201
+     * Test : l'inscription avec des données valides retourne 201.
      */
     public function testRegisterSuccess(): void
     {
@@ -111,7 +111,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : l'inscription avec un email existant retourne 409
+     * Test : l'inscription avec un email existant retourne 409.
      */
     public function testRegisterDuplicateEmail(): void
     {
@@ -131,7 +131,7 @@ class TaskApiTest extends WebTestCase
     // =========================================================================
 
     /**
-     * Test : la connexion avec de bons identifiants retourne un JWT
+     * Test : la connexion avec de bons identifiants retourne un JWT.
      */
     public function testLoginSuccess(): void
     {
@@ -149,7 +149,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : la connexion avec un mauvais mot de passe retourne 401
+     * Test : la connexion avec un mauvais mot de passe retourne 401.
      */
     public function testLoginWrongPassword(): void
     {
@@ -168,7 +168,7 @@ class TaskApiTest extends WebTestCase
     // =========================================================================
 
     /**
-     * Test : la liste des tâches est accessible avec un JWT valide
+     * Test : la liste des tâches est accessible avec un JWT valide.
      */
     public function testListTasksAuthenticated(): void
     {
@@ -179,7 +179,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : la liste des tâches retourne 401 sans JWT
+     * Test : la liste des tâches retourne 401 sans JWT.
      */
     public function testListTasksUnauthenticated(): void
     {
@@ -189,7 +189,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : créer une tâche retourne 201 avec les données correctes
+     * Test : créer une tâche retourne 201 avec les données correctes.
      */
     public function testCreateTask(): void
     {
@@ -208,7 +208,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : créer une tâche sans titre retourne 422
+     * Test : créer une tâche sans titre retourne 422.
      */
     public function testCreateTaskWithoutTitle(): void
     {
@@ -220,7 +220,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : modifier une tâche met à jour les données
+     * Test : modifier une tâche met à jour les données.
      */
     public function testUpdateTask(): void
     {
@@ -231,7 +231,7 @@ class TaskApiTest extends WebTestCase
         $created = json_decode($this->client->getResponse()->getContent(), true);
 
         // Puis la modifier
-        $this->authRequest('PUT', '/api/tasks/' . $created['id'], [
+        $this->authRequest('PUT', '/api/tasks/'.$created['id'], [
             'status' => 'done',
         ]);
 
@@ -242,7 +242,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Test : supprimer une tâche retourne 200
+     * Test : supprimer une tâche retourne 200.
      */
     public function testDeleteTask(): void
     {
@@ -253,7 +253,7 @@ class TaskApiTest extends WebTestCase
         $created = json_decode($this->client->getResponse()->getContent(), true);
 
         // La supprimer
-        $this->authRequest('DELETE', '/api/tasks/' . $created['id']);
+        $this->authRequest('DELETE', '/api/tasks/'.$created['id']);
 
         $this->assertResponseIsSuccessful();
     }
@@ -263,7 +263,7 @@ class TaskApiTest extends WebTestCase
     // =========================================================================
 
     /**
-     * Test : les statistiques retournent les compteurs attendus
+     * Test : les statistiques retournent les compteurs attendus.
      */
     public function testStats(): void
     {
@@ -284,7 +284,7 @@ class TaskApiTest extends WebTestCase
     }
 
     /**
-     * Nettoyage après chaque test
+     * Nettoyage après chaque test.
      */
     protected function tearDown(): void
     {

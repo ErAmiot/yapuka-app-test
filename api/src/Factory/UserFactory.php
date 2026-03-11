@@ -44,11 +44,11 @@ class UserFactory extends PersistentProxyObjectFactory
      */
     protected function defaults(): array|callable
     {
-        self::$counter++;
+        ++self::$counter;
 
         return [
-            'email' => 'user' . self::$counter . '@yapuka.dev',
-            'username' => 'Utilisateur ' . self::$counter,
+            'email' => 'user'.self::$counter.'@yapuka.dev',
+            'username' => 'Utilisateur '.self::$counter,
             'roles' => ['ROLE_USER'],
             // Le mot de passe sera hashé dans initialize()
             'password' => 'password',

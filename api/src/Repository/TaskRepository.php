@@ -26,7 +26,7 @@ class TaskRepository extends ServiceEntityRepository
     }
 
     /**
-     * Récupère toutes les tâches d'un utilisateur, triées par date de création (récent d'abord)
+     * Récupère toutes les tâches d'un utilisateur, triées par date de création (récent d'abord).
      *
      * @return Task[]
      */

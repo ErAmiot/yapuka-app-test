@@ -48,11 +48,11 @@ class NotificationController extends AbstractController
 
             // Envoyer un événement de connexion réussie
             echo "event: connected\n";
-            echo 'data: ' . json_encode([
+            echo 'data: '.json_encode([
                 'type' => 'connected',
                 'message' => 'Connexion SSE établie.',
                 'userId' => $user->getId(),
-            ]) . "\n\n";
+            ])."\n\n";
             flush();
 
             // Boucle principale : maintenir la connexion ouverte
@@ -70,17 +70,17 @@ class NotificationController extends AbstractController
 
                 // Simuler une notification périodique (toutes les 30 secondes)
                 // En production, on écouterait Redis pub/sub ici
-                if ($iteration > 0 && $iteration % 2 === 0) {
+                if ($iteration > 0 && 0 === $iteration % 2) {
                     echo "event: notification\n";
-                    echo 'data: ' . json_encode([
+                    echo 'data: '.json_encode([
                         'type' => 'reminder',
                         'message' => 'N\'oubliez pas de vérifier vos tâches en cours !',
                         'timestamp' => (new \DateTimeImmutable())->format('c'),
-                    ]) . "\n\n";
+                    ])."\n\n";
                     flush();
                 }
 
-                $iteration++;
+                ++$iteration;
                 // Attendre 15 secondes avant le prochain heartbeat
                 sleep(15);
             }
