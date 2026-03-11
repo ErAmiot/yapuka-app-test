@@ -38,7 +38,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./api
-          file: ./api/Dockerfile.prod
+          file: Dockerfile.prod
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/backend:latest
@@ -51,7 +51,7 @@ jobs:
         uses: docker/build-push-action@v7
         with:
           context: ./front
-          file: ./front/Dockerfile.prod
+          file: Dockerfile.prod
           push: true
           tags: |
             ghcr.io/${{ github.repository }}/frontend:latest
