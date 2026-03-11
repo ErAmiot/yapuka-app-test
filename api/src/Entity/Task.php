@@ -31,23 +31,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Index(columns: ['owner_id'], name: 'idx_task_owner')]
 // Exposition via API Platform avec les opérations CRUD standard
 // Note : les contrôleurs personnalisés gèrent la logique métier (filtrage par owner)
-#[ApiResource(
-    operations: [
-        new GetCollection(normalizationContext: ['groups' => ['task:read']]),
-        new Get(normalizationContext: ['groups' => ['task:read']]),
-        new Post(
-            normalizationContext: ['groups' => ['task:read']],
-            denormalizationContext: ['groups' => ['task:write']],
-        ),
-        new Put(
-            normalizationContext: ['groups' => ['task:read']],
-            denormalizationContext: ['groups' => ['task:write']],
-        ),
-        new Delete(),
-    ],
-    order: ['createdAt' => 'DESC'],
-    paginationEnabled: false,
-)]
+
 class Task
 {
     // --- Statuts possibles d'une tâche ---

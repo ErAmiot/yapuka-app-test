@@ -36,7 +36,7 @@ class NotificationController extends AbstractController
     // Ici, on envoie un heartbeat simple pour illustrer le mécanisme SSE.
     // =========================================================================
     #[Route('/stream', name: 'api_notifications_stream', methods: ['GET'])]
-    public function stream(): StreamedResponse
+    public function stream(string $view, array $parameters = [], ?StreamedResponse $response = null): StreamedResponse
     {
         $user = $this->getUser();
 

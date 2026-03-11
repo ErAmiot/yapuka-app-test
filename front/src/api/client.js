@@ -10,7 +10,9 @@
 // =============================================================================
 
 // URL de base de l'API (définie dans les variables d'environnement Vite)
-const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+const API_BASE_URL = window.__CONFIG__?.API_URL
+                     || import.meta.env.VITE_API_URL
+                     || '';
 
 /**
  * Fonction utilitaire pour effectuer des requêtes HTTP vers l'API.
@@ -42,14 +44,17 @@ async function apiRequest(endpoint, options = {}) {
     headers,
   });
 
+
   // Gérer le cas du token expiré (401 Unauthorized)
   if (response.status === 401) {
+
     // Nettoyer le token invalide
     localStorage.removeItem('yapuka_token');
     localStorage.removeItem('yapuka_user');
     // Rediriger vers la page de connexion
     window.location.href = '/login';
     throw new Error('Session expirée. Veuillez vous reconnecter.');
+
   }
 
   // Gérer les autres erreurs HTTP
