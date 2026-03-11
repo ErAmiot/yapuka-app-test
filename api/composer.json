@@ -35,6 +35,8 @@
     "dama/doctrine-test-bundle": "^8.0",
     "doctrine/doctrine-fixtures-bundle": "^4.0",
     "friends-of-behat/symfony-extension": "^2.6",
+    "friendsofphp/php-cs-fixer": "^3.94",
+    "phpstan/phpstan": "^2.1",
     "phpunit/phpunit": "^11.0",
     "symfony/browser-kit": "^7.2",
     "symfony/css-selector": "^7.2",
