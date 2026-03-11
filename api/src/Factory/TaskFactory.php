@@ -18,7 +18,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
 class TaskFactory extends PersistentProxyObjectFactory
 {
     // Compteur pour des titres uniques
-    /** @var int */
     private static int $counter = 0;
 
     // Liste de titres de tâches réalistes pour les fixtures
