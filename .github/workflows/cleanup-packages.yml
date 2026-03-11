@@ -11,8 +11,8 @@ jobs:
     strategy:
       matrix:
         package-name:
-          - frontend
-          - backend
+          - yapuka-symfony-react-app/frontend
+          - yapuka-symfony-react-app/backend
 
     steps:
       - name: Delete old package versions
