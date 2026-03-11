@@ -27,3 +27,7 @@ jobs:
       # Installation des dépendances
       - name: Installation des dépendances
         run: composer install --no-progress --no-suggest --no-interaction --prefer-dist
+      - name: Linting du code avec PHP CS FIXER
+        run: vendor/bin/php-cs-fixer fix --dry-run --diff
+      - name: Linting du code avec PHPStan
+        run: vendor/bin/phpstan analyse
