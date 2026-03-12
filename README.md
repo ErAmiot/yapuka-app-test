@@ -117,3 +117,5 @@ docker compose exec php php bin/phpunit
 | DELETE  | `/api/tasks/{id}`            | Supprimer une tâche      | ✅    |
 | GET     | `/api/tasks/stats`           | Statistiques             | ✅    |
 | GET     | `/api/notifications/stream`  | Notifications SSE        | ✅    |
+
+## Test pour les actions github
