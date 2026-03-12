@@ -47,6 +47,11 @@ class TaskApiTest extends WebTestCase
      */
     private function createTestUser(): void
     {
+        // Nettoyer les données existantes avant chaque test
+        $connection = $this->entityManager->getConnection();
+        $connection->executeStatement('DELETE FROM tasks');
+        $connection->executeStatement('DELETE FROM users');
+
         $hasher = static::getContainer()->get(UserPasswordHasherInterface::class);
 
         $user = new User();
