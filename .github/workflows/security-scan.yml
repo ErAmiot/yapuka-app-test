@@ -13,12 +13,14 @@ jobs:
     steps:
       - name: Checkout du code
         uses: actions/checkout@v6
-
+      -   name: Lowercase owner
+          id: lower
+          run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
       # --- Scanner l'image backend (bloque si vulnérabilité CRITICAL) ---
       - name: Scan image backend (critical)
         uses: aquasecurity/trivy-action@0.35.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}/backend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/backend:latest
           format: table
           severity: CRITICAL
           exit-code: '0'
@@ -27,7 +29,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         if: always()
         with:
-          image-ref: ghcr.io/${{ github.repository }}/backend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/backend:latest
           format: table
           severity: HIGH
           exit-code: '0'
@@ -36,7 +38,7 @@ jobs:
       - name: Scan image frontend (critical)
         uses: aquasecurity/trivy-action@0.35.0
         with:
-          image-ref: ghcr.io/${{ github.repository }}/frontend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/frontend:latest
           format: table
           severity: CRITICAL
           exit-code: '0'
@@ -45,7 +47,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         if: always()
         with:
-          image-ref: ghcr.io/${{ github.repository }}/frontend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/frontend:latest
           format: table
           severity: HIGH
           exit-code: '0'
@@ -55,7 +57,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         if: always()
         with:
-          image-ref: ghcr.io/${{ github.repository }}/backend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/backend:latest
           format: sarif
           output: backend-trivy.sarif
           severity: CRITICAL,HIGH
@@ -64,7 +66,7 @@ jobs:
         uses: aquasecurity/trivy-action@0.35.0
         if: always()
         with:
-          image-ref: ghcr.io/${{ github.repository }}/frontend:latest
+          image-ref: ghcr.io/${{steps.lower.outputs.owner}}/${{ github.event.repository.name }}/frontend:latest
           format: sarif
           output: frontend-trivy.sarif
           severity: CRITICAL,HIGH

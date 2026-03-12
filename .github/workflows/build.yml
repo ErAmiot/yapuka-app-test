@@ -34,12 +34,10 @@ jobs:
                     registry: ghcr.io
                     username: ${{ github.actor }}
                     password: ${{ secrets.GITHUB_TOKEN }}
+            # --- Build et push de l'image backend ---
             -   name: Lowercase owner
                 id: lower
                 run: echo "owner=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
-
-            -   run: echo ${{steps.lower.outputs.owner}}
-            # --- Build et push de l'image backend ---
             -   name: Build & Push Backend
                 uses: docker/build-push-action@v7
                 with:
