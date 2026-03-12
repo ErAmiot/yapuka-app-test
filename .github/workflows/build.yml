@@ -18,6 +18,8 @@ jobs:
     # if: github.event_name == 'push'
 
     steps:
+      - name: test
+        run: echo "Je suis un test"
       - name: Checkout du code
         uses: actions/checkout@v6
 
