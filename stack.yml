@@ -1,0 +1,139 @@
+# =============================================================================
+# stack.yml - Déploiement Swarm de Yapuka
+# =============================================================================
+# Fichier adapté depuis docker-compose.yml pour Docker Swarm.
+# Déploiement : docker stack deploy -c stack.yml yapuka
+# =============================================================================
+
+services:
+    # ===========================================================================
+    # Nginx - Reverse proxy (déployé sur le manager)
+    # ===========================================================================
+    nginx:
+        image: nginx:alpine
+        ports:
+            - "8080:80"
+        configs:
+            - source: nginx_conf
+              target: /ubuntu/home/default.conf
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+            placement:
+                constraints:
+                    - node.role == manager
+        networks:
+            - yapuka
+
+    # ===========================================================================
+    # PHP-FPM - Backend Symfony (répliqué sur les workers)
+    # ===========================================================================
+    php:
+        image: ghcr.io/eramiot/yapuka-app-test/backend:latest
+        environment:
+            APP_ENV: dev
+            DATABASE_URL: "postgresql://yapuka:yapuka@database:5432/yapuka?serverVersion=16"
+            REDIS_URL: "redis://redis:6379"
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
+            rollback_config:
+                parallelism: 1
+                delay: 5s
+            restart_policy:
+                condition: on-failure
+            placement:
+                constraints:
+                    - node.role == worker
+        networks:
+            - yapuka
+
+    # ===========================================================================
+    # Frontend React (répliqué sur les workers)
+    # ===========================================================================
+    front:
+        image: ghcr.io/eramiot/yapuka-app-test/frontend:latest
+        environment:
+            VITE_API_URL: "http://localhost:8080"
+        deploy:
+            replicas: 2
+            update_config:
+                parallelism: 1
+                delay: 10s
+            rollback_config:
+                parallelism: 1
+                delay: 5s
+            restart_policy:
+                condition: on-failure
+            placement:
+                constraints:
+                    - node.role == worker
+        networks:
+            - yapuka
+
+    # ===========================================================================
+    # PostgreSQL - Base de données (sur le manager pour la persistence)
+    # ===========================================================================
+    database:
+        image: postgres:16-alpine
+        environment:
+            POSTGRES_DB: yapuka
+            POSTGRES_USER: yapuka
+            POSTGRES_PASSWORD: yapuka
+        volumes:
+            - db_data:/var/lib/postgresql/data
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U yapuka" ]
+            interval: 5s
+            timeout: 5s
+            retries: 5
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+            placement:
+                constraints:
+                    - node.role == manager
+        networks:
+            - yapuka
+
+    # ===========================================================================
+    # Redis - Cache (sur le manager)
+    # ===========================================================================
+    redis:
+        image: redis:7-alpine
+        volumes:
+            - redis_data:/data
+        deploy:
+            replicas: 1
+            restart_policy:
+                condition: on-failure
+            placement:
+                constraints:
+                    - node.role == manager
+        networks:
+            - yapuka
+
+# =============================================================================
+# Configs (fichiers distribués à travers le cluster)
+# =============================================================================
+configs:
+    nginx_conf:
+        external: true
+
+# =============================================================================
+# Volumes persistants
+# =============================================================================
+volumes:
+    db_data:
+    redis_data:
+
+# =============================================================================
+# Réseau overlay (communication inter-nœuds)
+# =============================================================================
+networks:
+    yapuka:
+        driver: overlay
